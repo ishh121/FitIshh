@@ -2,6 +2,13 @@
 
 An AI-powered fitness, nutrition, and family wellness application built with React, TypeScript, and Vite.
 
+## Project layout
+
+- `frontend/` contains the React/Vite application and its frontend build configuration.
+- `backend/` contains the Express API and MongoDB integration.
+- `api/` contains the Vercel function adapter that forwards `/api/*` requests to the backend.
+- Root `package.json` scripts orchestrate local development and production builds.
+
 Currently, two official plugins are available:
 
 - [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
