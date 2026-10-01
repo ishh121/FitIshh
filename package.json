@@ -4,12 +4,12 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "node ./node_modules/vite/bin/vite.js frontend --config frontend/vite.config.ts",
+    "dev": "vite frontend --config frontend/vite.config.ts",
     "dev:api": "node --watch backend/index.js",
     "start": "node backend/index.js",
     "start:api": "node backend/index.js",
-    "build": "node ./node_modules/typescript/lib/tsc.js -b && node ./node_modules/vite/bin/vite.js build frontend --config frontend/vite.config.ts",
-    "preview": "node ./node_modules/vite/bin/vite.js preview frontend --config frontend/vite.config.ts"
+    "build": "tsc -b && vite build frontend --config frontend/vite.config.ts",
+    "preview": "vite preview frontend --config frontend/vite.config.ts"
   },
   "dependencies": {
     "@react-three/drei": "^10.7.8",
