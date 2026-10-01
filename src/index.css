@@ -1,0 +1,179 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: light;
+    --color-background: #f7f4f0;
+    --color-surface: #fffefa;
+    --color-surface-raised: #ffffff;
+    --color-text-primary: #1e293b;
+    --color-text-secondary: #475569;
+    --color-text-muted: #64748b;
+    --color-border: rgba(15, 23, 42, 0.1);
+    --color-border-subtle: rgba(15, 23, 42, 0.06);
+    --color-overlay: rgba(15, 23, 42, 0.48);
+    --shadow-surface: 0 4px 18px rgba(37, 45, 40, 0.07);
+  }
+
+  :root.dark {
+    color-scheme: dark;
+    --color-background: #070a0e;
+    --color-surface: rgba(18, 24, 34, 0.72);
+    --color-surface-raised: #0c1017;
+    --color-text-primary: #f1f5f9;
+    --color-text-secondary: #cbd5e1;
+    --color-text-muted: #94a3b8;
+    --color-border: rgba(255, 255, 255, 0.1);
+    --color-border-subtle: rgba(255, 255, 255, 0.05);
+    --color-overlay: rgba(0, 0, 0, 0.6);
+    --shadow-surface: 0 8px 32px rgba(0, 0, 0, 0.37);
+  }
+}
+
+/* ─── Base Theme ─────────────────────────────────────────────── */
+@layer base {
+  body {
+    background-color: var(--color-background);
+    color: var(--color-text-primary);
+    transition: background-color 180ms ease, color 180ms ease;
+  }
+}
+
+/* ─── Dark mode Glass Panels ─────────────────────────────────── */
+.glass-panel {
+  background: var(--color-surface);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--color-border-subtle);
+  box-shadow: var(--shadow-surface);
+  transition: background-color 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+}
+
+.glass-panel-subtle {
+  background: color-mix(in srgb, var(--color-surface-raised) 55%, transparent);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--color-border-subtle);
+  transition: background-color 180ms ease, border-color 180ms ease;
+}
+
+.glass-panel-glow {
+  background: color-mix(in srgb, var(--color-surface-raised) 90%, transparent);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(16, 185, 129, 0.2);
+  box-shadow: 0 0 25px -5px rgba(16, 185, 129, 0.15);
+  transition: background-color 180ms ease, border-color 180ms ease;
+}
+
+.glass-panel-surya {
+  background: rgba(26, 21, 16, 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(245, 158, 11, 0.25);
+  box-shadow: 0 0 25px -5px rgba(245, 158, 11, 0.15);
+  transition: background-color 180ms ease, border-color 180ms ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
+
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  html,
+  body {
+    cursor: url('/prana-cursor.svg') 12 1, auto;
+  }
+
+  a,
+  button,
+  select,
+  [role='button'],
+  [tabindex]:not([tabindex='-1']) {
+    cursor: url('/prana-cursor.svg') 12 1, pointer;
+  }
+
+  input,
+  textarea,
+  [contenteditable='true'] {
+    cursor: text;
+  }
+}
+
+/* ─── Gradient Text ──────────────────────────────────────────── */
+.text-gradient-prana {
+  background: linear-gradient(135deg, #ffffff 30%, #34d399 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+html:not(.dark) .text-gradient-prana {
+  background: linear-gradient(135deg, #064e3b 30%, #10B981 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.text-gradient-surya {
+  background: linear-gradient(135deg, #ffffff 20%, #fbbf24 60%, #ea580c 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+html:not(.dark) .text-gradient-surya {
+  background: linear-gradient(135deg, #92400e 20%, #D97706 60%, #ea580c 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.text-gradient-warm {
+  background: linear-gradient(135deg, #ffffff 40%, #e2e8f0 70%, #d4c3a3 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+html:not(.dark) .text-gradient-warm {
+  background: linear-gradient(135deg, #0f172a 40%, #334155 70%, #78716c 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ─── Scrollbars ─────────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #070a0e;
+}
+::-webkit-scrollbar-thumb {
+  background: #1e293b;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #334155;
+}
+
+html:not(.dark) ::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+html:not(.dark) ::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+}
+html:not(.dark) ::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}

@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script>
+      try {
+        document.documentElement.classList.toggle('dark', (localStorage.getItem('fitishh-theme') || localStorage.getItem('fitsaathi-theme')) !== 'light');
+      } catch {
+        document.documentElement.classList.add('dark');
+      }
+    </script>
+    <title>FitIshh — India's AI-Powered Fitness, Nutrition & Family Wellness Platform</title>
+    <meta name="description" content="FitIshh brings AI-powered fitness, nutrition and family wellness together — built for the way India eats, moves and lives. 3D interactive tracking, AI meal scanning, and multi-generational health." />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='%23070A0E'/><path d='M30 50 Q45 25 50 50 T70 50' stroke='%2310B981' stroke-width='8' fill='none' stroke-linecap='round'/><circle cx='50' cy='35' r='7' fill='%23F59E0B'/></svg>" />
+  </head>
+  <body class="font-sans antialiased overflow-x-hidden">
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
