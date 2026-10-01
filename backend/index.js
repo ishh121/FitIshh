@@ -38,28 +38,55 @@ const client = new MongoClient(MONGODB_URI || 'mongodb://127.0.0.1:27017/fitishh
 const app = express();
 app.set('trust proxy', isProduction ? 1 : false);
 
-const frontendUrl = process.env.FRONTEND_URL ? process.env.FRONTEND_URL.replace(/\/$/, '') : null;
+const frontendUrl = process.env.FRONTEND_URL
+  ? process.env.FRONTEND_URL.replace(/\/$/, '')
+  : null;
+
 const allowedOrigins = [
   'http://localhost:5173',
   'http://localhost:3000',
   'http://127.0.0.1:5173',
   'http://127.0.0.1:3000',
 ];
+
 if (frontendUrl) {
   allowedOrigins.push(frontendUrl);
 }
 
 app.use(cors({
   origin: (origin, callback) => {
-    if (!origin || allowedOrigins.includes(origin) || allowedOrigins.some((o) => origin.startsWith(o))) {
-      callback(null, true);
-    } else {
-      callback(null, true);
+    // Allow requests without an Origin header
+    // (for example, server-to-server requests).
+    if (!origin) {
+      return callback(null, true);
     }
+
+    if (allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    }
+
+    console.warn(`CORS blocked origin: ${origin}`);
+    return callback(new Error('Not allowed by CORS'));
   },
+
   credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
+
+  methods: [
+    'GET',
+    'POST',
+    'PUT',
+    'PATCH',
+    'DELETE',
+    'OPTIONS',
+  ],
+
+  allowedHeaders: [
+    'Content-Type',
+    'Authorization',
+    'X-Requested-With',
+  ],
+
+  optionsSuccessStatus: 204,
 }));
 
 app.use(helmet({
@@ -588,7 +615,7 @@ try {
 
   console.error('========================================\n');
 
-  await client.close().catch(() => {});
+  await client.close().catch(() => { });
 
   if (!process.env.VERCEL) {
     process.exit(1);
