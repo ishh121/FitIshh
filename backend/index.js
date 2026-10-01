@@ -20,17 +20,17 @@ const sessionSecret = process.env.SESSION_SECRET ?? 'fitishh-local-development-o
 const port = Number(process.env.PORT ?? process.env.API_PORT ?? 3001);
 const appRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 
-if (isProduction && (!process.env.SESSION_SECRET || process.env.SESSION_SECRET.length < 32)) {
+if (isProduction && !process.env.VERCEL && (!process.env.SESSION_SECRET || process.env.SESSION_SECRET.length < 32)) {
   console.error('SESSION_SECRET must be at least 32 characters in production.');
   process.exit(1);
 }
 
-if (!MONGODB_URI) {
+if (!MONGODB_URI && !process.env.VERCEL) {
   console.error('❌ Missing MONGODB_URI. Copy .env.example to .env and set it.');
   process.exit(1);
 }
 
-const client = new MongoClient(MONGODB_URI, {
+const client = new MongoClient(MONGODB_URI || 'mongodb://127.0.0.1:27017/fitishh', {
   serverSelectionTimeoutMS: 5000
 });
 
@@ -569,7 +569,9 @@ try {
 
   await client.close().catch(() => {});
 
-  process.exit(1);
+  if (!process.env.VERCEL) {
+    process.exit(1);
+  }
 }
 
 export { app };
