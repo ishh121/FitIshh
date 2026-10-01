@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Utensils } from 'lucide-react';
+import { apiFetch } from '../../services/api';
 
 interface MealLogItem {
   id: string;
@@ -23,7 +24,7 @@ export const NutritionSnapshot: React.FC<{ onNavigateToNutrition: () => void }> 
 
   useEffect(() => {
     let active = true;
-    fetch('/api/meal-logs')
+    apiFetch('/api/meal-logs')
       .then(async (response) => {
         if (!response.ok) return [];
         const result = await response.json();

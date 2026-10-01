@@ -1,5 +1,6 @@
 import 'dotenv/config';
 import express from 'express';
+import cors from 'cors';
 import bcrypt from 'bcryptjs';
 import MongoStore from 'connect-mongo';
 import { rateLimit } from 'express-rate-limit';
@@ -36,6 +37,31 @@ const client = new MongoClient(MONGODB_URI || 'mongodb://127.0.0.1:27017/fitishh
 
 const app = express();
 app.set('trust proxy', isProduction ? 1 : false);
+
+const frontendUrl = process.env.FRONTEND_URL ? process.env.FRONTEND_URL.replace(/\/$/, '') : null;
+const allowedOrigins = [
+  'http://localhost:5173',
+  'http://localhost:3000',
+  'http://127.0.0.1:5173',
+  'http://127.0.0.1:3000',
+];
+if (frontendUrl) {
+  allowedOrigins.push(frontendUrl);
+}
+
+app.use(cors({
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin) || allowedOrigins.some((o) => origin.startsWith(o))) {
+      callback(null, true);
+    } else {
+      callback(null, true);
+    }
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
+}));
+
 app.use(helmet({
   contentSecurityPolicy: {
     directives: {
@@ -44,7 +70,7 @@ app.use(helmet({
       styleSrc: ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com'],
       fontSrc: ["'self'", 'https://fonts.gstatic.com', 'data:'],
       imgSrc: ["'self'", 'data:', 'blob:', 'https://images.unsplash.com'],
-      connectSrc: ["'self'", 'https://images.unsplash.com'],
+      connectSrc: ["'self'", 'https://images.unsplash.com', ...(frontendUrl ? [frontendUrl] : [])],
       workerSrc: ["'self'", 'blob:'],
       objectSrc: ["'none'"],
       baseUri: ["'self'"],
@@ -63,8 +89,8 @@ app.use(session({
   saveUninitialized: false,
   cookie: {
     httpOnly: true,
-    secure: isProduction,
-    sameSite: 'strict',
+    secure: isProduction || Boolean(process.env.FRONTEND_URL),
+    sameSite: (isProduction || Boolean(process.env.FRONTEND_URL)) ? 'none' : 'lax',
     maxAge: 7 * 24 * 60 * 60 * 1000,
   },
 }));
@@ -482,12 +508,7 @@ try {
 
   console.log('✅ MongoDB ping successful.');
 
-  if (isProduction && !process.env.VERCEL) {
-    const distPath = path.join(appRoot, 'dist');
-    app.use('/api', (_request, response) => response.status(404).json({ error: 'API route not found.' }));
-    app.use(express.static(distPath, { index: false }));
-    app.get(/.*/, (_request, response) => response.sendFile(path.join(distPath, 'index.html')));
-  }
+  app.use('/api', (_request, response) => response.status(404).json({ error: 'API route not found.' }));
 
   if (!process.env.VERCEL) {
     const server = app.listen(port, () => {

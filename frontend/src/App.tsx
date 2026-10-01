@@ -19,6 +19,7 @@ import type { DailyMetrics, WorkoutSession, WeeklyStepDay } from './types/fitnes
 import type { FamilyMember } from './types/family';
 import type { UserData } from './types/userData';
 import { userDataService } from './services/userDataService';
+import { apiFetch } from './services/api';
 import { Bot, Sparkles, ArrowRight } from 'lucide-react';
 import { motion, AnimatePresence, MotionConfig } from 'framer-motion';
 
@@ -64,7 +65,7 @@ export function App() {
     let active = true;
     const restoreSession = async () => {
       try {
-        const response = await fetch('/api/auth/me');
+        const response = await apiFetch('/api/auth/me');
         const result = await response.json();
         if (!active) return;
         setAuthUser(result.user ?? null);
@@ -155,7 +156,7 @@ export function App() {
 
   const handleSignOut = async () => {
     try {
-      const response = await fetch('/api/auth/logout', { method: 'POST' });
+      const response = await apiFetch('/api/auth/logout', { method: 'POST' });
       if (!response.ok) return;
       setAuthUser(null);
       resetUserData();

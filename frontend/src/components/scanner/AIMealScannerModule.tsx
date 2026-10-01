@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Plate3D } from '../3d/Plate3D';
 import { Camera, Sparkles, Check, ArrowRight, Bot, AlertCircle, RefreshCw, Zap, ShieldAlert, ChevronRight, Info, Database } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { apiFetch } from '../../services/api';
 
 const SCAN_STAGES = [
   { text: 'Analyzing image...', progress: 20 },
@@ -97,7 +98,7 @@ export const AIMealScannerModule: React.FC<AIMealScannerModuleProps> = ({
   const handleSaveSampleMeal = async () => {
     setSaveState('saving');
     try {
-      const response = await fetch('/api/meal-logs', {
+      const response = await apiFetch('/api/meal-logs', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

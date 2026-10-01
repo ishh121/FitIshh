@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { apiFetch } from '../../services/api';
 import {
   Activity,
   ArrowLeft,
@@ -51,7 +52,7 @@ export const AuthView: React.FC<AuthViewProps> = ({ mode, onModeChange, onBack, 
     setIsSubmitting(true);
     setFeedback('');
     try {
-      const response = await fetch(`/api/auth/${isRegistering ? 'register' : 'login'}`, {
+      const response = await apiFetch(`/api/auth/${isRegistering ? 'register' : 'login'}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, email, password }),
